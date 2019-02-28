@@ -1,0 +1,133 @@
+create stack
+
+* create key pair called as qqq.pem
+
+* create user and group withadministrator access in aws IAM & save access and secret key
+
+* lauch ec-2 instance 
+
+* connect with git bash
+
+* apt-get update
+
+* apt-get install python3 -y
+
+* python --version
+
+* apt-get install python-pip
+
+* pip --version
+
+* pip install awscli
+
+* aws --version
+
+* mkdir deploy
+     
+* cd deploy
+     +
+* nano qqq.pem   {copy all the value and paste here from the downloaded qqq.pem key to this qqq.pem file}
+    
+* chmod 400 qqq.pem
+
+* nano myfile.yml    {create yaml file}
+
+Resources:
+  AppNode:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0f9cf087c1f27d9b1            
+      KeyName: qqq
+      SecurityGroups:
+        - !Ref AppNodeSG
+  AppNodeSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "for the app node that allow ssh, http and docker ports"
+      SecurityGroupIngress:
+        -
+          CidrIp: 0.0.0.0/0
+          FromPort: "80"
+          IpProtocol: tcp
+          ToPort: "80"
+        -
+          CidrIp: 0.0.0.0/0
+          FromPort: "22"
+          IpProtocol: tcp
+          ToPort: "22"
+        -
+          CidrIp: 0.0.0.0/0
+          FromPort: "443"
+          IpProtocol: tcp
+          ToPort: "443"
+    
+
+
+
+
+* aws configure     {need to give IAM access  & secreat key with respective region & enter}
+
+
+* aws cloudformation create-stack --stack-name mystack --template-body file://$PWD/myfile.yml     {create stack}  [error:- $PWD remove]
+
+
+* aws cloudformation describe-stack-resources --stack-name mystack         {description of stack}
+ 
+* ls
+
+
+* ssh -i qqq.pem ubuntu@IPADD of newly created ec2 instance
+        or
+  ssh -i qqq.pem dns of the instance
+
+
+* aws cloudformation delete-stack --stack-name mystack            {delete stack} 
+
+
+# now install docker in the yml file:-
+
+Resources:
+  AppNode:
+    Type: AWS::EC2::Instance
+    Properties:
+       InstanceType: t2.micro
+       ImageId: ami-0080e4c5bc078760e
+       KeyName: qqq
+       SecurityGroups:
+         - !Ref AppNodeSG
+       UserData: !Base64 |
+         #!/bin/bash 
+         yum update -qq 
+         yum install -y yum-transport-https ca-certificates
+         yum-key adv --keyserver hkep://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+         echo "deb https://yum.dockerproject.org/repo ubuntu-xenial main'' | tee /etc/apt/sources.list"
+         apt-get update -qq
+         apt-get purge lxc-docker || true
+         apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
+         apt-get -y install docker-engine
+         usermod -aG docker ubuntu
+  AppNodeSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: for the app node that allow ssh, http and docker ports
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0 
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0 
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 0.0.0.0/0 
+
+* aws cloudformation create-stack --stack-name mystack --template-body file://$PWD/myfile.yml    {create stack}
+    
+   
+         
+         
+ 

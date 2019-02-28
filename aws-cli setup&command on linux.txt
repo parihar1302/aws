@@ -1,0 +1,186 @@
+# AWS-CLI     https://www.youtube.com/watch?v=8J0g_xWUzV0
+
+* SEETING UP THE AWS-CLI
+
+1.) INSTALL PYTHON
+> yum install python3 -y
+
+2.) INSTALL PIP
+> yum install python-pip -y
+
+3.) INSTALL AWS-CLI
+> pip install awscli
+
+___________________________________________
+                           
+keypair:- qqq.pem
+yaml file:- myfile.yml
+stack name:- mystack                                       
+
+
+
+
+
+         COMMANDS
+
+
+* aws --version     (to verify)
+
+* aws configure      {to congiure awscli and adding keys for default user}
+
+* aws configure --profile user2      (for another user profile)
+
+* aws s3 mb s3://mybucket        {mb create the bbucket named as mybucket}
+
+* aws s3 mb s3://mybucket --region us-west-1      {creating bucket in specific region}
+
+* aws s3 ls            {to see s3 bucket object for default user}
+
+* aws s3 ls --profile user2        {to see s3 bucket for user2}
+
+
+* aws s3 cp myvideo.mp4 s3://mybucket/                #{file upload to the bucket}
+
+
+* which aws          {location of aws-cli}
+
+* ls  ~/.aws   ami-0080e4c5bc078760e
+
+* rm -r ~/.aws/cli/cache      {cleard cache credentials}
+
+* describe-instances      {to check in which region ec2 running}
+
+* aws ec2 describe-instances --output table --region us-east-1         {to check in which region ec2 running}
+
+* which aws_completer       {Locate the AWS Completer}
+
+* aws iam create-group --group-name MyCloud9Group              #{aws-cli creatting group}
+
+* aws iam create-user --user-name MyCloud9User                   #{aws-cli creating user}
+
+* aws iam create-login-profile --user-name MyCloud9User --password MyC10ud9Us3r --password-reset-required            #{to create login profile with password to the consol after logging , aws will ask to change the password }
+
+* aws iam create-access-key --user-name MyCloud9User           ##{create access key and secreat access key}    
+
+#{note:- save user access key & secreat access key cuzz u cn not see again n again}
+
+
+* aws iam delete-access-key --user-name MyUser --access-key-id AKIAIOSFODNN7EXAMPLE                #{to delete the access and secreate key}
+ 
+AKIAJX5SFIYISHPTXHKA    1bKJQsL07TNNVtwCRMNczdhnPA/iDej+L+5f7TjQ      MyCloud9User             {access,secreat access key and username}
+
+AKIAIBJX2LAIPXJKH4ZA    6/WC/ODFW4vgyFmn88FVFM4WGj+h29hVee4iiFt3      MyCloud9UserAdmin        {access,secreat access key and username}
+
+
+* aws iam add-user-to-group --group-name MyCloud9Group --user-name MyCloud9User                #{add-user-to-group command to add the user to the group}
+
+
+* export POLICYARN=$(aws iam list-policies --query 'Policies[?PolicyName==`PowerUserAccess`].{ARN:Arn}' --output text)       ~               #{attach arn number}
+
+
+* echo $POLICYARN
+
+ 
+* aws iam attach-user-policy --user-name MyUser --policy-arn $POLICYARN            #{attch manage policy}
+
+
+* aws iam attach-group-policy --group-name MyCloud9Group --policy-arn arn:aws:iam::aws:policy/AWSCloud9User        #{add cloud9 access to the group}
+
+
+* aws iam create-login-profile --user-name MyUser --password My!User1Login8P@ssword --password-reset-required           #{to create login profile and password}
+
+
+* aws iam update-login-profile --user-name MyUser --password My!User1ADifferentP@ssword                   #{update login password}
+
+
+
+
+* aws iam list-attached-user-policies --user-name MyCloud9User            #{attch policy}
+
+
+
+
+* aws ec2 create-security-group --group-name devenv-sg --vpc-id vpc-xxxxxxxx --description "Security group for development environment"        #{for customise vpc add vpc id}
+
+
+
+* aws ec2 create-security-group --group-name devenv-sg --description "Security group for development environment"         #{for default vpc}
+
+
+* aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp --port 22 --cidr 0.0.0.0/0               ##{enabling port}
+
+
+* aws ec2 create-key-pair --key-name mykey --query "KeyMaterial" --output text > mykey.pem                 #{#{create ssh key for ec2 instance}
+
+
+* chmod 400 devenv-key.pem      #(giving readonly permission)
+
+
+* aws ec2 describe-key-pairs --key-name MyKeyPair             #{you can use it to verify that the private key that you have on your local machine matches the public key that's stored in AWS.}
+
+
+* * aws ec2 create-security-group --group-name India --description "My security group" --vpc-id vpc-b461d4ce          #{Creating SecurityGroup for customise VPC}
+
+* aws ec2 create-security-group --group-name usa --description "My security group"                     #{creating SG for default VPC}
+
+* aws ec2 delete-security-group --group-name MySecurityGroup                                   #{delete SG}
+           or
+* aws ec2 delete-security-group --group-id sg-03ebc4c55b1b49b82                    #{delete }
+
+
+* aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp --port 22 --cidr 0.0.0.0/0        #{enabling port}
+                or
+aws ec2 authorize-security-group-ingress --group-id sg-903004f8 --protocol tcp --port 3389 --cidr 203.0.113.0/24
+
+
+
+* aws ec2 run-instances --image-id ami-0f9cf087c1f27d9b1  --security-group-ids sg-03ebc4c55b1b49b82 --count 2  --instance-type t2.micro --key-name badlapur --query "Instances[0].InstanceId"                                                              #{launching a instance}
+                              OR
+aws ec2 run-instances --image-id ami-0ac019f4fcb7cb7e6 --count 1 --instance-type t1.micro --key-name MyKeyPairo --security-groups Mysecuritygroup       #{launching instance]
+
+
+
+
+* aws ec2 create-tags --resources i-0763ec3ae7f3ea7a7 --tags Key=Name,Value=MyInstance                     #{to add the tag}
+
+
+* aws ec2 terminate-instances --instance-ids i-0763ec3ae7f3ea7a7                          #{terminating the instance}
+
+
+
+#          AWS-CLI with CloudFormation
+      ----------------------------------------
+
+
+* CREATE STACK
+> aws cloudformation create-stack --stack-name mystack --template-body file://$PWD/myfile.yml                    #{create stack}
+              or
+  aws cloudformation create-stack --stack-name mystack --template-body file://myfile.yml 
+
+* Describe STACK resources
+> aws cloudformation describe-stack-resources --stack-name mystack
+
+* DELETE STACK                                                                                                #{delete stack}
+> aws cloudformation delete-stack --stack-name mystack
+
+* ssh to the ec-2 instance created by coudformation
+> ssh -i qqq.pem ec2-user@IPADDRESS
+
+* LIST OF ALL STACKS
+> aws cloudformation list-stacks
+
+* all stacks that have a status of CREATE_COMPLETE
+> aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE
+
+
+* shows all runninng instance info
+> aws cloudformation describe-stacks  
+
+* shows summary information for the myteststack stack:
+> aws cloudformation describe-stacks --stack-name myteststack
+
+
+* can track the status of the resources AWS CloudFormation is creating and deleting
+> aws cloudformation describe-stack-events --stack-name myteststack
+
+  

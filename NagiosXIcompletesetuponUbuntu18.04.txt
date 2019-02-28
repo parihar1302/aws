@@ -1,0 +1,62 @@
+    NAGIOS XI ON UBUNTU 18.04/16.04                            
+                                                         for nagiosxi server   https://assets.nagios.com/downloads/nagiosxi/docs/Installing-Nagios-XI-Manually-on-Linux.pdf
+                                                          for nagiosxi remote  https://assets.nagios.com/downloads/nagiosxi/docs/Installing_The_XI_Linux_Agent.pdf
+
+
+* It supports every linux flavour acspect Amazon linux
+
+* Paid version {trial for 60 days}
+
+* work on 5666 ports.
+
+* open port 80 and 22.
+
+* requirmnt is minimum 2 machines
+     1.) for nagios XI server
+     2.) nrpe plugin 
+
+* 2 method to install nagios xi
+
+    a.) automate download :-
+ 
+        curl https://assets.nagios.com/downloads/nagiosxi/install.sh | sh
+
+    b.) manual download :-
+        
+        cd /tmp
+
+        wget https://assets.nagios.com/downloads/nagiosxi/xi-latest.tar.gz
+  
+        tar xzf xi-latest.tar.gz
+
+        cd nagiosxi
+    
+        ./fullinstall
+       
+        systemctl restart nagios
+
+
+
+* type in url :- http://<server_address>/nagiosxi
+* go to dashboard > host u can monitor localhost
+
+* go to configuration wizard > nrpe plugin
+
+* give <remote machine ipadd>  OS 
+
+
+
+
+Step2.)    Remote machine :- NRPE install on Remote Machine
+
+*   1  apt-get update
+
+*   2  cd /tmp
+
+*   3  wget https://assets.nagios.com/downloads/nagiosxi/agents/linux-nrpe-agent.tar.gz
+
+*   4  tar xzf linux-nrpe-agent.tar.gz
+
+*   5  cd linux-nrpe-agent
+
+*   6  ./fullinstall       #{note allow host= <nagiosxihostserveripadd>}

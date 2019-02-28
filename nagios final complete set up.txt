@@ -1,0 +1,134 @@
+FINAL Nagios on ubuntu 18.04 final
+
+# STEP1.) HOSTSERVER/localMACHINE- NAgios installation on HOST Machine
+
+    1  apt-get update
+    2  sudo apt-get install -y build-essential libgd-dev openssl libssl-dev apache2 php libapache2-mod-php snmp libnet-snmp-perl gettext libmcrypt-dev libssl-dev
+    3  sudo apt-get install -y autoconf gcc libc6 make wget unzip apache2 php libapache2-mod-php7.2
+    4  useradd nagios
+    5  usermod -a -G nagios www-data
+    6  cd ~
+    7  wget https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.3.4/nagios-4.3.4.tar.gz                  #{installing nagios4}
+    8  tar -xf nagios-4.3.4.tar.gz           {extracting file}
+    9  cd nagios-4.3.4
+   10  ./configure --with-httpd-conf=/etc/apache2/sites-enabled    #For Ubuntu
+   11  make all
+   12  make install
+   13  make install-init
+   14  make install-commandmode
+   15  make install-config
+   16  make install-webconf
+   17  systemctl enable nagios
+   18  a2enmod rewrite cgi
+   19  htpasswd -c -b /usr/local/nagios/etc/htpasswd.users nagiosadmin pass123       #{provinding id and password}
+   20  systemctl restart apache2   #For Ubuntu
+   21  cd ..
+   22  wget https://github.com/nagios-plugins/nagios-plugins/releases/download/release-2.2.1/nagios-plugins-2.2.1.tar.gz                #{nagios-plugin installation}
+   23  tar -xf nagios-plugins-2.2.1.tar.gz       #{extracting file}
+   24  cd nagios-plugins-2.2.1
+   25  ./configure
+   26  make install
+   27  systemctl start nagios          #{verfifing on url by typing ipadd/nagios AFTER opening "port 80"}
+
+ #{NOTE:- HERE WE HAVE INSTALLED NAGIOS IN "HOSTSERVER" and we can monitor our hostserver/localmachine }
+
+
+
+
+# STEP 2.) REMOTE MACHINE -NRPE plugin install on remotemachine
+
+    1  apt-get update
+    2  useradd nagios
+    3  apt update
+    4  apt install -y autoconf automake gcc libc6 libmcrypt-dev make libssl-dev
+    5  sudo apt-get install -y autoconf automake gcc libc6 libmcrypt-dev make libssl-dev wget openssl
+    6  wget --no-check-certificate -O nrpe.tar.gz https://github.com/NagiosEnterprises/nrpe/archive/nrpe-3.2.1.tar.gz
+    7  tar xzf nrpe.tar.gz
+    8  cd nrpe-nrpe-3.2.1/
+    9  sudo ./configure --enable-command-args --with-ssl-lib=/usr/lib/x86_64-linux-gnu/
+   10  sudo make all
+   11  make check_nrpe
+   12  make install-plugin
+   13  make all
+   14  make install
+   15  make install-config
+   16  make install-init
+   17  vi /usr/local/nagios/etc/nrpe.cfg               #{find allowed host & add <HostserverIpadd> and server_address=0.0.0.0}
+   18  systemctl enable nrpe
+   19  systemctl start nrpe                      #{open port }
+
+
+
+
+
+# Step3.) HostSERVER/Nagios SERVER install check_nrpe plugin
+
+   29  sudo apt-get install -y autoconf automake gcc libc6 libmcrypt-dev make libssl-dev wget openssl
+   30  wget --no-check-certificate -O nrpe.tar.gz https://github.com/NagiosEnterprises/nrpe/archive/nrpe-3.2.1.tar.gz           #{check_nrpe pluging installation}
+   31  tar xzf nrpe.tar.gz        #{extracting file}
+   32  cd nrpe-nrpe-3.2.1/
+   33  sudo ./configure --enable-command-args --with-ssl-lib=/usr/lib/x86_64-linux-gnu/
+   34  sudo make all
+   35  make check_nrpe
+   36  make install-plugin
+   37  vi /usr/local/nagios/etc/objects/commands.cfg        #{type the below command at last of the file}  
+        
+       define command{
+               command_name check_nrpe
+               command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+       }
+
+   38  /usr/local/nagios/libexec/check_nrpe -H <RemoteMachineIPAddress>
+   39  vi /usr/local/nagios/etc/nagios.cfg                   {#cfg_dir=/usr/local/nagios/etc/servers  find this command and remove '#' and save it}
+   40  cd /usr/local/nagios/etc/
+   41  mkdir servers
+   42  cd servers/
+   43  vi testserver1.cfg
+
+define host {
+        use                             linux-server
+        host_name                       remotemachine1
+        alias                           remotemachine1
+        address                         <RemoteMachineIPAdd>
+        max_check_attempts              5
+        check_period                    24x7
+        notification_interval           30
+        notification_period             24x7
+}
+
+define service {
+        use                             generic-service
+        host_name                       remotemachine1
+        service_description             CPU load
+        check_command                   check_nrpe!check_load
+}
+
+
+   44  systemctl restart nagios
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+# questions and Answere
+
+
+* nagios run on port 5666
+
+* a. Direct checks: Nagios server directly checks, remote Linux host for local resources like load, disk, swap usage etc. (as shown above)
+
+* b. Indirect checks: If Nagios server can not access target remote Linux host, then we can install NRPE on other Linux host and use it to check remote services. (as       shown above)
+
+* Q.) How to Add Windows Host to Nagios Monitoring Server
+  A.) https://www.tecmint.com/how-to-add-windows-host-to-nagios-monitoring-server
+
+     I.) Install NSClient++ addon on the Windows Machine.
+     ii.) Configure Nagios Server for monitoring Windows Machine.
+     iii.) Add new host and service definitions for Windows machine monitoring.
+     iv.) Restart the Nagios Service
+
+
+
+
+
+
+
+

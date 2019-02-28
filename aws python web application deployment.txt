@@ -1,0 +1,85 @@
+aws deploying web application    https://aws.amazon.com/getting-started/projects/build-modern-app-fargate-lambda-dynamodb-python/module-one/
+
+
+1.) CREATE STATIC WEBSITE
+------------------------------
+
+* sign into aws consol
+
+* search cloud9 
+
+* create environment    #{nameed as abhi_alive}
+
+* git clone -b python https://github.com/aws-samples/aws-modern-application-workshop.git
+
+
+* cd aws-modern-application-workshop
+
+# create a S3 bucket    {we will create the infrastructure components needed for hosting a static website in Amazon S3 }
+
+
+* aws s3 mb s3://abhi-alive-bucket-name       #{to create bucket}
+
+
+* aws s3 website s3://abhi-alive-bucket-name --index-document index.html           #{upload object in the bucket}
+
+* aws s3 website s3://abhi-alive-bucket-name --index-document index.html --error-document error.html
+#{note:- make this bucket public for anyone to create public website  make objet public permission through}
+
+
+* bucket policy is located at: ~/environment/aws-modern-application-workshop/module-1/aws-cli/website-bucket-policy.json.  
+
+ 
+# change the REPLACE_ME_BUCKET_NAME with abhi-alive-bucket-name.
+
+
+* aws s3api put-bucket-policy --bucket abhi-alive-bucket-name --policy file://~/environment/aws-modern-application-workshop/module-1/aws-cli/website-bucket-policy.json               #{to add a public bucket policy to your website:}
+
+
+* aws s3 cp ~/environment/aws-modern-application-workshop/module-1/web/index.html s3://abhi-alive-bucket-name/index.html        #{Publish The Website Content To S3}
+
+* type in the url :- http://abhi-alive-bucket-name.s3-website-us-east-1.amazonaws.com/          #{region and bucket name will be changed when you provide different region and bucket name}
+
+
+#{note :- you will create a new microservice hosted using AWS Fargate so that your Mythical Mysfits website can integrate with an application backend.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+aws iam create-group --group-name MyCloud9Group     #{aws-cli creatting group}
+
+aws iam create-user --user-name MyCloud9User         #{aws-cli creating user}
+
+aws iam create-login-profile --user-name MyCloud9User --password MyC10ud9Us3r! --password-reset-required            #{to create login profile with password to the consol after logging , aws will ask to change the password }
+
+aws iam create-access-key --user-name MyCloud9User           ##{create access key and secreat access key}    
+
+#{note:- save user access key & secreat access key cuzz u cn not see again n again}
+ 
+AKIAJX5SFIYISHPTXHKA    1bKJQsL07TNNVtwCRMNczdhnPA/iDej+L+5f7TjQ      MyCloud9User             {access,secreat access key and username}
+
+AKIAIBJX2LAIPXJKH4ZA    6/WC/ODFW4vgyFmn88FVFM4WGj+h29hVee4iiFt3      MyCloud9UserAdmin        {access,secreat access key and username}
+
+
+aws iam add-user-to-group --group-name MyCloud9Group --user-name MyCloud9User      #{add-user-to-group command to add the user to the group}
+
+
+aws iam attach-group-policy --group-name MyCloud9Group --policy-arn arn:aws:iam::aws:policy/AWSCloud9User        #{add cloud9 access to the group}
+
+
+
+                        

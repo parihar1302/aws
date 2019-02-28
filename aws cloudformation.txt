@@ -1,0 +1,67 @@
+AWS Cloudformation 
+
+* If you upload a local template file, AWS CloudFormation uploads it to an Amazon Simple Storage Service (Amazon S3) bucket in your AWS account
+
+
+* aws cloudformation designer :- AWS CloudFormation Designer is a tool for visually creating and modifying templates.
+
+
+*AWS::CloudFormation::Init  :- AWS::CloudFormation::Init type to include metadata on an Amazon EC2 instance for the cfn-init helper script. If your template calls the cfn-init script, the script looks for resource metadata rooted in the AWS::CloudFormation::Init metadata key
+The scripts run on the Amazon EC2 instance during the stack creation process.
+
+* cfn-init :- The cfn-init helper script reads template metadata from the AWS::CloudFormation::Init key. u cn do following thing?:-
+        i.)Fetch and parse metadata from AWS CloudFormation
+
+        ii.)Install packages
+
+        iii.)Write files to disk
+
+        iv.)enable/disable and start/stop service
+
+
+yum install -y aws-cfn-bootstrap
+
+sudo /sbin/service cfn-hup restart
+
+* AWS::CloudFormation::Init:- To include authentication information for a file or source that you specify with AWS::CloudFormation::Init,
+
+                * AWS::CloudFormation::Init files key:- use the uris property if the source is a URI or the buckets property if the source is an Amazon S3 bucket
+
+                * AWS::CloudFormation::Authentication:- to associate authentication information defined in an AWS::CloudFormation::Authentication resource directly with a file
+
+
+{
+  "Type" : "AWS::CloudFormation::Authentication" {
+    "String" : {
+      "accessKeyId" : String,
+      "buckets" : [ String, ... ],
+      "password" : String,
+      "secretKey" : String,
+      "type" : String,
+      "uris" : [ String, ... ],
+      "username" : String,
+      "roleName" : String
+    }
+  }
+}
+
+
+
+* AWS::CloudFormation::Interface it is a metadata key that defines how parameters are grouped and sorted in the AWS CloudFormation console.
+Note:-
+
+Only the AWS CloudFormation console uses the AWS::CloudFormation::Interface metadata key. AWS CloudFormation CLI and API calls do not use this key.
+
+"Metadata" : {
+  "AWS::CloudFormation::Interface" : {
+    "ParameterGroups" : [ ParameterGroup, ... ],
+    "ParameterLabels" : ParameterLabel
+  }
+}
+
+
+
+* MyS3Bucket:                               #{create bucket}
+    Type: AWS::S3::Bucket       
+
+

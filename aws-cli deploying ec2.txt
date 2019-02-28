@@ -1,0 +1,120 @@
+aws-cli deploying ec2 instance
+
+
+
+* install python, pip & aws-cli
+
+
+* aws configure
+
+
+* aws iam create-group --group-name MyIamGroup                             #{creating group}
+
+* aws iam create-user --user-name MyUser                             #{creating user}
+
+
+* aws iam add-user-to-group --user-name MyUser --group-name MyIamGroup                    #{adding user to the group}
+
+
+* aws iam get-group --group-name MyIamGroup                   #{verifing user and group respectivily}
+
+
+* export POLICYARN=$(aws iam list-policies --query 'Policies[?PolicyName==`PowerUserAccess`].{ARN:Arn}' --output text)       ~               #{attach arn number}
+
+
+* echo $POLICYARN
+
+
+* aws iam attach-user-policy --user-name MyUser --policy-arn $POLICYARN            #{attch manage policy}
+
+
+* aws iam create-login-profile --user-name MyUser --password My!User1Login8P@ssword --password-reset-required           #{to create login profile and password}
+
+* aws iam update-login-profile --user-name MyUser --password My!User1ADifferentP@ssword                   #{update login password}
+
+
+* aws iam create-access-key --user-name MyUser          #create access and secreat key{
+
+
+* aws s3 cp myvideo.mp4 s3://mybucket/                #{file upload to the bucket}
+
+
+
+
+
+
+
+* aws configure
+
+* aws ec2 describe-regions --output table              #(find the region)
+
+* aws ec2 create-security-group --group-name devenv-sg --vpc-id vpc-xxxxxxxx --description "Security group for development environment"        #{for customise vpc add vpc id}
+
+* aws ec2 create-security-group --group-name devenv-sg --description "Security group for development environment"             #{for default vpc}
+    
+* aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp --port 22 --cidr 0.0.0.0/0               #{enabling port}
+
+* aws ec2 create-key-pair --key-name MyKeyPair --query "KeyMaterial" --output text > MyKeyPair.pem                  #{create ssh key and attch with instanse}
+
+* chmod 400 devenv-key.pem      #(giving readonly permission)
+ 
+* aws ec2 describe-key-pairs --key-name MyKeyPair             #{you can use it to verify that the private key that you have on your local machine matches the public key that's stored in AWS.}     
+
+
+* aws ec2 create-key-pair --key-name badlapur                #{create keypair }
+
+* aws ec2 create-key-pair --key-name wassepur > badlapur      #{creating new keypair with the help of first key}
+
+* aws ec2 delete-key-pair --key-name wassepur                #{delete key pair}
+
+
+* aws ec2 create-security-group --group-name India --description "My security group" --vpc-id vpc-b461d4ce          #{Creating SecurityGroup for customise VPC}
+
+* aws ec2 create-security-group --group-name usa --description "My security group"                     #{creating SG for default VPC}
+
+* aws ec2 delete-security-group --group-name MySecurityGroup                                   #{delete SG}
+           or
+* aws ec2 delete-security-group --group-id sg-03ebc4c55b1b49b82                    #{delete }
+
+
+* aws ec2 authorize-security-group-ingress --group-name devenv-sg --protocol tcp --port 22 --cidr 0.0.0.0/0        #{enabling port}
+                or
+aws ec2 authorize-security-group-ingress --group-id sg-903004f8 --protocol tcp --port 3389 --cidr 203.0.113.0/24
+
+
+* aws ec2 run-instances --image-id ami-0f9cf087c1f27d9b1  --security-group-ids sg-03ebc4c55b1b49b82 --count 2  --instance-type t2.micro --key-name badlapur --query "Instances[0].InstanceId"
+                              OR
+aws ec2 run-instances --image-id ami-0ac019f4fcb7cb7e6 --count 1 --instance-type t1.micro --key-name MyKeyPairo --security-groups Mysecuritygroup
+
+
+
+* aws ec2 create-tags --resources i-0763ec3ae7f3ea7a7 --tags Key=Name,Value=MyInstance          #{to add the tag}
+
+
+* aws ec2 terminate-instances --instance-ids i-0763ec3ae7f3ea7a7                          #{terminating the instance}
+
+
+
+
+sg-090fb31963acf39ae     "i-0532a32eb1e409b39"
+
+
+
+
+* aws ec2 run-instances --image-id ami-ami-0f9cf087c1f27d9b1 \      {for customise vpc & subnets}
+                             --subnet-id subnet-xxxxxxxx \
+                             --security-group-ids sg-b018ced5 \
+                             --count 1 \
+                             --instance-type t2.micro \
+                             --key-name devenv-key \
+                             --query "Instances[0].InstanceId"
+"i-0787e4282810ef9cf"  
+
+* aws ec2 run-instances --image-id ami-ami-0f9cf087c1f27d9b1 \      {for default}
+                             --security-group-ids sg-b018ced5 \
+                             --count 1 \
+                             --instance-type t2.micro \
+                             --key-name devenv-key \
+                             --query "Instances[0].InstanceId"
+"i-0787e4282810ef9cf                 
+

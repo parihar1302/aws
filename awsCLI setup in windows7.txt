@@ -1,0 +1,26 @@
+            https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html#install-msi-on-windows
+
+
+
+AWS CLI setting up on Windows7
+
+
+* Download python latest version {https://www.python.org/downloads/}
+
+* Install & set the customise path by creating newfolder named as python372 in c drive:-  c:/pythoon372/               #{note created folder should not contain any gap & special corrector}
+
+* open git bash
+
+* python --version
+
+* pip --version
+
+* pip install awscli
+
+* aws --version
+
+
+
+UNINSTALL AWSCLI 
+
+* appwiz.cpl

@@ -1,0 +1,53 @@
+###aws elastic bean stack
+
+
+# it is a plateform as a service used for deploying and scaling the web application which written in java,.net,python,php and node.js etc serverlike:-apache,tomcat,nginx 
+
+# simplest and fastest way to deploy an aws application 
+
+# plateform as a service means =its a cloudcomputing service where u can deploy and host your application.
+
+# ebs provide health check of the web server environment appication. 
+  healthchek:- grey= environment updating, green=healthchek successful,yellow=2 or more chewcks failed red=3 or more cheksfailed
+
+# means we just have to worry about code, rest resources(ec2,elb,asg,s3 & vpc etc) will be handeled by platform as a service (here EBS)
+
+# if u laucnch an application on ebs and later u want to add somthing so u can do widout deleting the previos version. so u will have v1 and v2 both.
+
+# note {at a single point of time environment can run only single version application but in ebs u can create multi environment for single application in different         stage (prod, developemnt, testing)ex.-
+        ex.- for production 1st environment withj 1 version , for development 2nd environment with version 2 for test 3rd environment with v3}
+
+
+
+features
+
+1.) quiker deployment :- focus on code only rest will be handeled by EBS cuzz its a plateform as a service. so deploymnt will be fast
+
+2.a) simplifing operation:- simple task is code rest will no have to worry
+
+3.) cost efficient:- widout ebs have to deployment other 3rd party software for monitoring or other perpose\ full costly
+                     wid ebs all all dependent tool will be in a package so no additional cost.
+
+4.) multi-tanat architure:- can be used in any device.
+
+5.) better user experince:- can see the clear view and detail of production , testing or development stage.
+
+
+
+# two type of tier
+
+a.) web server tier:- server http request . elb > ec2 > host manage
+
+b.) worker tier :- process background task.like time insentive and resource consuming task
+                   ex.- if 1 user send some big request  to web server , web server except and process in the background  and take time cuzz request is big meanwhile                         2nd user send request to web server due to web server already proceesing user 1 request it will deny user 2 request. for outcome we add worker                         tier after web server so which ever request comes worker tier will handel it.
+           
+
+    user > web server > SQS > worker environment (deamon) > application 
+
+
+### 
+
+abhialive.us-east-2.elasticbeanstalk.com
+
+
+

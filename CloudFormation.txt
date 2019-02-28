@@ -1,0 +1,24 @@
+Clouldformation
+
+* Cloudformation :- it creates your stack with the help of template. 
+                   It cheks the health and validate the code first than only it creates.
+
+* template := it is just a txt file of codes in JSON & YAML with requried resources like IAM, VPC, S3 etc mention in template.
+              save this template locally in S3
+              Can modify, replicate for another environment and reuseable for creating another stack.
+
+* Stack :- GUI infrastrure with requird resources
+
+
+     template >>> AWS ClouFormation >>> STACk
+
+
+* ClodFormation Designer tool:- it modifies, create and view the template.
+
+* Stackset:- u van create multiple stack by using single template, accross the globe (multi region)         
+             create, update nd delete stack in target account
+
+
+{NOTE: API :- Application programming Interface:- using login feature of somother company by giving it api key..
+              suppose we are using login feature in our application of googals and googal is asking api key for tracking and security perpose }
+ex:- when you install swiggy , it will ask sign up, login with googal and login with facebook..so swiggy is using login feature of googal and facebook by providing them api key..      

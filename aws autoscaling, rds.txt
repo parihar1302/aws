@@ -1,0 +1,349 @@
+
+*******LOAD BALANCER*****
+
+it distributes the traffic from one server to another
+
+
+if my instanse is gttng public ip adrress than it shows that your instance is accessble over the internet.
+
+load balancer distribute the traffic from 1 instans to another when 1st intsansse gets tarffic load.
+web server >>>  load balancer >>> server1 server2
+
+instanse shud be healtuhy than only LOAD Balancer send the traffic
+5 sec load balancer wait for response from instanse if it doesn't get response than it will be unhealthy instanse and load balancer chek that instanse in every 30 sec for 10 tyms..and after that also it doesnt get respons than instanse will be unhealthy forever.
+
+Cross zone load balancing means = sending the tarffic 50 - 50% to backend or avaliability zone
+
+5 min load balnser takes to send the traffic. load balancer chek in every 
+
+
+*******Auto Scalling :-to create an instanse when traffic is more. from AMI 
+
+Create Custome AMI from base AMI(instanse) so application will start gettng launched
+
+instanse >>> snapshot >>> AMI
+
+instanse >>>> AMI >>>> AUTOSCALING
+
+Auto Scalling group :- this is autometically created. collection of instanse oction of all intanses and which create additional instanse when traffic is high in the term of CPU utilization.
+
+when traffic will be high than 30% or any of CPU utilization of application auto scalling grp will create launch instanses and put behind the load balancer 
+
+launch configuration :- give info  about instanse type memory
+
+classicload balancer is already attched to auto scalling ,. 
+ 
+CloudWatch alarm monitor cpu utilization if it is beyond 50% than it will give alaram to the grp than auto scalling grp will create & launch instanse
+
+after creation of autoscaling grp instanse >>> login >>> stress(increase cpu utilization) >>> than autoscaling instanses will be created 
+
+create alarm = amiserverSNS   (sns is messaging service)
+
+take the ip of new instanse and paste in url ,, (ec2 instanse application should work)
+
+instanse >>>> cloudwatch >>>  autpscalling group                                                  sbdp@dataone.in
+
+**COMMAND:- ec2-user@asg(newly created instanse)
+         yum install stress -y      (to increase the CPU utilization install stress)      {{{{{EEEEERRRRRRRRORRRRRR}}}}}}}     ERROR
+error :- no stress package is found
+    
+solved:- yum repolist all    (to see the repository)
+               +
+         yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm        (to add EPEL)
+               +
+         yum install stress -y        (install)
+               +
+        stress --cpu 500         (to increase the load on cpu, keep pressing this command)
+
+
+                  or
+yes > /dev/null &        (to increae the load/utilization on cpu)  
+note :- type this command to N numbers to increase the load
+
+killall yes           (to terminate all utilization)
+
+                  OR
+./configure
+make
+make install
+stress -c 40
+stress -c 40 -timeout 10s
+
+
+auto scalling :- u need to set 1 limit , if cpu utilization go more of that limit than instanse will be created autometically &
+                 as that utilization goes down of that limit , thn that instanse will get deleted.
+                 
+intanse >>> AMI >>> auto scalling instanse
+
+cpu utilization >>> cloudwatch >>> auto scaling grp >>> new instanse
+
+cloudwatch monitor cpu utilization and give the alarm to auto scaling grp which is responsible to create , launch instanse and put behind the ELB 
+
+
+q.)  AMI   SSH or putty work or not?
+
+Note:- allocatd size of my sequal datbase is 5GB by default in aws.4,3,2,1, wont support.
+
+
+
+***RDS    relational database************                                                    url :- https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Tutorials.WebServerDB.CreateDBInstance.html       
+                            no reck server requried , no physical machine.no natgateway
+                            can clone as much as we want
+                            backup available, can move to oter availability zone.
+
+create rds security group >>> create rds >>> lauch ec2(install apache, php, mysql)
+
+{ ec2-user@ipaddress
+> sudo -i
+>  yum update -y
+>  yum install -y httpd24 php70 mysql56-server php70-mysqlnd
+        or
+  yum install httpd php php-mysqlnd
+> service httpd start
+> chkconfig httpd on
+> groupadd www
+> usermod -a -G www ec2-user
+> exit
+> groups
+> sudo chown -R root:www /var/www    (to change root configuration)
+> sudo chmod 2775 /var/www
+> find /var/www -type f -exec sudo chmod 0664 {} +
+(note now in next step we will connect apache server to rds)
+> sudo su
+> cd /var/www
+> sudo mkdir inc
+> cd inc
+> nano dbinfo.inc
+                { <?php
+                                         username       endpoint of rds instanse      
+                                                |         |
+                     define('DB_SERVER', 'rdsabhi1302.czycrgeu3v1k.us-west-2.rds.amazonaws.com:3306'):
+                     define('DB_USERNAME', 'rdsabhi1302');
+                     define('DB_PASSWORD', '13021302');
+                     define('DB_DATABASE', 'rdsabhi1302');
+
+                ?> }
+(((ERROR:- endpoint location :- RDS/instanse/db instanse/connection))))                                  ERROR
+
+> cd /var/www/html
+> nano sample.php
+
+https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Tutorials.WebServerDB.CreateDBInstance.html       open on browser
+
+
+
+
+***direct connect - private lease conncetion
+                 drak fiber cable
+   GPS and CP are 2 service provider in india
+in us at & T for global
+     
+
+********RDS ***************
+
+* CREATE SECURITY GRP AND ALLOW SOURCE TRAFFIC FROM web SERVER
+* create ec2 slectect web server security grp
+
+> sudo -i
+> yum update -y
+> yum install httpd php php-mysqlnd
+> service httpd start
+> chkconfig httpd on
+
+# To set file permissions for the Apache web server , ec2 user will manage all files
+
+> groupadd www
+> usermod -a -G www ec2-user
+> exit
+> groups
+> sudo chown -R root:www /var/www                       (to change group owernership /var/www)
+> sudo chmod 2775 /var/www                              (change the directory permission)
+> find /var/www -type d -exec sudo chmod 2775 {} +        
+> find /var/www -type f -exec sudo chmod 0664 {} +      (change file permission)            
+
+# Connect your Apache web server to your RDS DB instance
+
+> cd /var/www
+> sudo -i
+> mkdir inc
+> cd inc
+> nano dbinfo.inc
+               {<?php
+
+                        define('DB_SERVER', 'endpoint:3306');
+                        define('DB_USERNAME', 'tutorial_user');
+                        define('DB_PASSWORD', 'master password');
+                        define('DB_DATABASE', 'sample');
+
+               ?>}
+
+> cd /var/www/html
+> nano SamplePage.php
+
+                    {<?php include "../inc/dbinfo.inc"; ?>
+<html>
+<body>
+<h1>Sample page</h1>
+<?php
+
+  /* Connect to MySQL and select the database. */
+  $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD);
+
+  if (mysqli_connect_errno()) echo "Failed to connect to MySQL: " . mysqli_connect_error();
+
+  $database = mysqli_select_db($connection, DB_DATABASE);
+
+  /* Ensure that the Employees table exists. */
+  VerifyEmployeesTable($connection, DB_DATABASE); 
+
+  /* If input fields are populated, add a row to the Employees table. */
+  $employee_name = htmlentities($_POST['Name']);
+  $employee_address = htmlentities($_POST['Address']);
+
+  if (strlen($employee_name) || strlen($employee_address)) {
+    AddEmployee($connection, $employee_name, $employee_address);
+  }
+?>
+
+<!-- Input form -->
+<form action="<?PHP echo $_SERVER['SCRIPT_NAME'] ?>" method="POST">
+  <table border="0">
+    <tr>
+      <td>Name</td>
+      <td>Address</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="text" name="Name" maxlength="45" size="30" />
+      </td>
+      <td>
+        <input type="text" name="Address" maxlength="90" size="60" />
+      </td>
+      <td>
+        <input type="submit" value="Add Data" />
+      </td>
+    </tr>
+  </table>
+</form>
+
+<!-- Display table data. -->
+<table border="1" cellpadding="2" cellspacing="2">
+  <tr>
+    <td>ID</td>
+    <td>Name</td>
+    <td>Address</td>
+  </tr>
+
+<?php
+
+$result = mysqli_query($connection, "SELECT * FROM Employees"); 
+
+while($query_data = mysqli_fetch_row($result)) {
+  echo "<tr>";
+  echo "<td>",$query_data[0], "</td>",
+       "<td>",$query_data[1], "</td>",
+       "<td>",$query_data[2], "</td>";
+  echo "</tr>";
+}
+?>
+
+</table>
+
+<!-- Clean up. -->
+<?php
+
+  mysqli_free_result($result);
+  mysqli_close($connection);
+
+?>
+
+</body>
+</html>
+
+
+<?php
+
+/* Add an employee to the table. */
+function AddEmployee($connection, $name, $address) {
+   $n = mysqli_real_escape_string($connection, $name);
+   $a = mysqli_real_escape_string($connection, $address);
+
+   $query = "INSERT INTO `Employees` (`Name`, `Address`) VALUES ('$n', '$a');";
+
+   if(!mysqli_query($connection, $query)) echo("<p>Error adding employee data.</p>");
+}
+
+/* Check whether the table exists and, if not, create it. */
+function VerifyEmployeesTable($connection, $dbName) {
+  if(!TableExists("Employees", $connection, $dbName)) 
+  { 
+     $query = "CREATE TABLE `Employees` (
+         `ID` int(11) NOT NULL AUTO_INCREMENT,
+         `Name` varchar(45) DEFAULT NULL,
+         `Address` varchar(90) DEFAULT NULL,
+         PRIMARY KEY (`ID`),
+         UNIQUE KEY `ID_UNIQUE` (`ID`)
+       ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1";
+
+     if(!mysqli_query($connection, $query)) echo("<p>Error creating table.</p>");
+  }
+}
+
+/* Check for the existence of a table. */
+function TableExists($tableName, $connection, $dbName) {
+  $t = mysqli_real_escape_string($connection, $tableName);
+  $d = mysqli_real_escape_string($connection, $dbName);
+
+  $checktable = mysqli_query($connection, 
+      "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_NAME = '$t' AND TABLE_SCHEMA = '$d'");
+
+  if(mysqli_num_rows($checktable) > 0) return true;
+
+  return false;
+}
+                      ?>}
+
+
+
+* to verify type on browser
+> http://EC2 instance endpoint/SamplePage.php
+        or
+> SamplePage.php
+
+
+
+
+
+**** CODE DEPLOY  *************
+
+CREATE  2 ec2 instanse 
+ssh 1 instanse   
+sudo su
+yum update -y
+yum install httpd wget ruby aws-cli -y
+service httpd start
+chkconfig httpd on
+pwd
+aws configure
+key id  {AKIAJDUH3HXKSASCUEAQ}
+secrest key        IepnO4VT10/jOOOTIq46oRzmRbqqwZxE0SwjmR7U
+region {us-east (N. Virginia)}
+format json
+wget https://aws-codedeploy-us-east-2.s3.amazonaws.com/latest/install     (download code deploy agent from s3 bucket)
+chmod +x ./install
+sed -i "s/sleep(.*)/sleep(10)/" install                   (to get agent faster running)
+./install auto
+service codedeploy-agent status
+
+same installation for ec2 2nd instanse
+
+code deploy
+custome deplyomnt
+select in place deployment :- 1st will be taken , 2nd will be on deploymnt so full tarffic will go on 1st. 1 up 2 down
+blue green deploymnt :- like .auto scalling 
+
+code piplines :-like a tunnel btw source code and production enviroment
+
+
+
+***************ELASTIC BEENSTACK*******
