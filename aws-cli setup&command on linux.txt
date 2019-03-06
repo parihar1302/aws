@@ -24,35 +24,37 @@ stack name:- mystack
          COMMANDS
 
 
-* aws --version     (to verify)
+* aws --version     #(to verify)
 
-* aws configure      {to congiure awscli and adding keys for default user}
+* aws configure      #{to congiure awscli and adding keys for default user}
 
-* aws configure --profile user2      (for another user profile)
+* aws configure --profile user2      #(for another user profile)
 
-* aws s3 mb s3://mybucket        {mb create the bbucket named as mybucket}
+* aws s3 mb s3://mybucket        #{mb create the bbucket named as mybucket}
 
-* aws s3 mb s3://mybucket --region us-west-1      {creating bucket in specific region}
+* aws s3 mb s3://mybucket --region us-west-1      #{creating bucket in specific region}
 
-* aws s3 ls            {to see s3 bucket object for default user}
+* aws s3 rb s3://mybucket -- force        #{remocve bucket}
 
-* aws s3 ls --profile user2        {to see s3 bucket for user2}
+* aws s3 ls            #{to see s3 bucket object for default user}
+
+* aws s3 ls --profile user2        #{to see s3 bucket for user2}
 
 
 * aws s3 cp myvideo.mp4 s3://mybucket/                #{file upload to the bucket}
 
 
-* which aws          {location of aws-cli}
+* which aws          #{location of aws-cli}
 
 * ls  ~/.aws   ami-0080e4c5bc078760e
 
-* rm -r ~/.aws/cli/cache      {cleard cache credentials}
+* rm -r ~/.aws/cli/cache      #{cleard cache credentials}
 
-* describe-instances      {to check in which region ec2 running}
+* describe-instances      #{to check in which region ec2 running}
 
-* aws ec2 describe-instances --output table --region us-east-1         {to check in which region ec2 running}
+* aws ec2 describe-instances --output table --region us-east-1        # {to check in which region ec2 running}
 
-* which aws_completer       {Locate the AWS Completer}
+* which aws_completer       #{Locate the AWS Completer}
 
 * aws iam create-group --group-name MyCloud9Group              #{aws-cli creatting group}
 
