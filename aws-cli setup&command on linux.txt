@@ -36,6 +36,10 @@ stack name:- mystack
 
 * aws s3 rb s3://mybucket -- force        #{remocve bucket}
 
+* aws s3 rm s3://mybucket/myfile.txt --recursive     #{delete object/file from the bucket}
+
+* aws s3 rm s3://mybucket --recursive      #{delete all object from buckjet}
+
 * aws s3 ls            #{to see s3 bucket object for default user}
 
 * aws s3 ls --profile user2        #{to see s3 bucket for user2}
