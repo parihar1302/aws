@@ -44,7 +44,6 @@ stack name:- mystack
 
 * aws s3 ls --profile user2        #{to see s3 bucket for user2}
 
-
 * aws s3 cp myvideo.mp4 s3://mybucket/                #{file upload to the bucket}
 
 
@@ -106,7 +105,7 @@ AKIAIBJX2LAIPXJKH4ZA    6/WC/ODFW4vgyFmn88FVFM4WGj+h29hVee4iiFt3      MyCloud9Us
 
 
 
-* aws ec2 create-security-group --group-name devenv-sg --vpc-id vpc-xxxxxxxx --description "Security group for development environment"        #{for customise vpc add vpc id}
+* aws ec2 create-security-group --group-name devenv-sg --vpc-id vpc-xxxxxxxx --description "Security group for development environment"        #{for customise vpc add vpc id, group name=security group name}
 
 
 
@@ -119,7 +118,7 @@ AKIAIBJX2LAIPXJKH4ZA    6/WC/ODFW4vgyFmn88FVFM4WGj+h29hVee4iiFt3      MyCloud9Us
 * aws ec2 create-key-pair --key-name mykey --query "KeyMaterial" --output text > mykey.pem                 #{#{create ssh key for ec2 instance}
 
 
-* chmod 400 devenv-key.pem      #(giving readonly permission)
+* chmod 400 mykey.pem      #(giving readonly permission)
 
 
 * aws ec2 describe-key-pairs --key-name MyKeyPair             #{you can use it to verify that the private key that you have on your local machine matches the public key that's stored in AWS.}
