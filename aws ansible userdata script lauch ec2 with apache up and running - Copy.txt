@@ -15,10 +15,10 @@ ansible userdata lauch ec2 with apache up and running
          user_data: |
                #!/bin/sh
                sudo apt-get install apache2 -y | sudo apt update | sudo service apache2 enable | sudo service apache2 restart
-         image: ami-0f9cf087c1f27d9b1     #ubuntu 16.04 n.varginia
+         image: ami-0a313d6098716f372    #ubuntu 16.04 n.varginia
          region: us-east-1
          wait: yes
-         group: don    #security group name not id number
+         group: default   #security group name not id number
          count: 4    #number of instance     #{19 more instace can launch, if ur using 1 ec2 instace already}
          vpc_subnet_id: subnet-afe3b0a0
          assign_public_ip: yes

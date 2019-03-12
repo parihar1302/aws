@@ -1,0 +1,74 @@
+Step 1.) Create 1 yaml file
+
+vi cloudformation.yml
+
+
+Parameters:
+  SecurityGroupIds:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+    Description: Security want
+
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Key for ssh
+  InstanceType:
+    Type: String
+  Image:
+    Type: String
+    Default: ami-0a313d6098716f372   # ubuntu 18
+  ServerName:
+    Type: String
+    Description: Name your server
+Resources:
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref Image
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds: !Ref SecurityGroupIds
+      UserData:
+        fn::Base64:
+          !Sub |
+              #!/bin/bash -ex
+              apt install -y apache2:
+              echo "<h1> Apna Time Aayega </h1>" > /var/www/html/index.html:
+              cd /var/www/html:
+              chmod 777 index.html:
+              service apache2 start:
+              service apache2 enable:
+      Tags:
+        _
+          Key: Name
+          Value: !Ref ServerName
+
+
+Step 2.) upload this file into s3 bucket and make it public 
+
+
+Step 3.) create a file for ansible
+
+vi ansible.yml
+
+---
+- hosts: localhost
+  tasks:
+    - name: First take provision from ec2
+      cloudformation:
+        stack_name: 'Ailaaa'
+        state: present
+        region: us-east-1
+        disable_rollback: true
+        template_url: https://s3.amazonaws.com/folder/cloudformation.template     ##link of the uploaded file
+        template_parameters:
+          KeyName: bantai                ##refer to cloudformation file
+          SecurityGroupIds: sg-794b203a
+          InstanceType: t2.micro
+          Image: ami-0a313d6098716f372
+          ServerName: 'Ailaaa'
+
+
+ansible-playbook 
+
+
+
