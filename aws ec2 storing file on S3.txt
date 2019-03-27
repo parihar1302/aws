@@ -1,0 +1,33 @@
+ec2 stroing file on S3
+
+
+step-1>) create a user and give access for adminaccess or ec2fullaccess and save the csv file (copy access & secreat access key)
+
+
+Step-2>) launch a ec2 instance
+
+
+step-3>) 
+    1  sudo -i
+    2  apt update
+    7  apt install apache2 -y
+    8  service apache2 start 
+    9  service apache2 enable
+   10  ls
+   11  cd /var/www/html          ##{apache configuration path/location}
+   12  ls
+   13  nano index.html
+   14  nano sultanmirza.html
+   15  cd
+   18  apt install python -y       
+   19  apt install pip -y
+   20  pip --version
+   21  apt install python-pip -y
+   23  pip install awscli
+   24  aws configure
+   27  aws --version
+   28  aws s3 ls
+   30  aws s3 mb s3://mcsher    ##{creating bucket named as mcsher}
+   31  aws s3 ls
+   38  cd
+   40  aws s3 sync /var/www/html/ s3://mcsher/sultanmirza.html
