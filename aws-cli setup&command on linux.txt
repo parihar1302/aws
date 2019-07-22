@@ -156,6 +156,9 @@ aws ec2 run-instances --image-id ami-0ac019f4fcb7cb7e6 --count 1 --instance-type
 #          AWS-CLI with CloudFormation
       ----------------------------------------
 
+nano myfile.yml
+##{paste coludformation template here}s
+
 
 * CREATE STACK
 > aws cloudformation create-stack --stack-name mystack --template-body file://$PWD/myfile.yml                    #{create stack}

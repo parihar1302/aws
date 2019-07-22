@@ -1,0 +1,38 @@
+AWS ami replication same and cross/multi region
+--------------------------------------------------------
+
+1.) AMI replication on same region
+
+* launch ec2 instance as ubuntu server (for ex.)
+
+* select it & go to action tab and select image than create image.
+
+* AMIs section store theat image.
+
+* Again press launch instance tab in ec2 instnace, this time select 'My AMI' from left side bar with same configuration.
+
+* press connect and copy the ssh id.
+
+* while login/pasting into your gitbash or putty or etc remove root and type ubuntu.
+
+
+2.) AMI replication on cross
+
+* lauch ec2 instance as ubuntu server
+
+* select it & go to action tab and select image than create image.
+
+* AMIs section store theat image.
+
+* select the ami and go to action than copy ami.
+
+* need to give destination/target (the region where u want to replicate ami.) and secect the Encryption box to secure by encryption aws/ebs or KMS master key.
+
+end
+-----------
+
+Advantages :- cross regiom:- Even Higher Availability
+                             Scalability
+                             Performance
+
+

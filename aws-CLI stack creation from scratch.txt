@@ -2,7 +2,7 @@ create stack
 
 * create key pair called as qqq.pem
 
-* create user and group withadministrator access in aws IAM & save access and secret key
+* create user and group with administrator access in aws IAM & save access and secret key
 
 * lauch ec-2 instance 
 

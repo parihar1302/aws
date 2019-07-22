@@ -21,8 +21,9 @@ step-3>)
    15  cd
    18  apt install python -y       
    19  apt install pip -y
-   20  pip --version
+              or
    21  apt install python-pip -y
+   20  pip --version
    23  pip install awscli
    24  aws configure
    27  aws --version

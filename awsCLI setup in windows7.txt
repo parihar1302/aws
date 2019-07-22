@@ -4,6 +4,7 @@
 
 AWS CLI setting up on Windows7
 
+* create user and save the access & secreat access key
 
 * Download python latest version {https://www.python.org/downloads/}
 
@@ -19,6 +20,7 @@ AWS CLI setting up on Windows7
 
 * aws --version
 
+* aws configure     ##{paste access & secreat access key with region}
 
 
 UNINSTALL AWSCLI 
