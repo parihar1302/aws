@@ -9,9 +9,11 @@ Senerio-2.) Key does not have readonly (400 or 600) permission.
 
 Senerio-3.) Security Group port ssh (22) is not open.
 
-Senerio-4.) Security Group Port SSH > Source (your local IP).
+Senerio-4.) Security Group Port SSH > Source (your local computer IP).
+
 
 Senerio-5.) System Manager  {without ssh, ssm can login to the ec2 instance. By default "SSM Agent" installed in Ubuntu16/18.04, AMAZON Linux/Linux2, Amazon ECS-Optimised, windows server 2008/12 R2/16/19.}
+
 a.) Go to System manager > Session manager > start a session
 
 b.) if roles is not attached than go to the EC2 > action > Attach IAM role > New role > create EC2AccessSSM.
@@ -32,3 +34,4 @@ e.) Go to EC2 and connect with SSH (normal connect method)
 
 
 Senerio-6.) Recover Pem file (create new instance and detach primary instance volume and attach with new ec2 instance and mount the volume than again vice-versa of the same volume and login the primary instance. )
+
