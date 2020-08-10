@@ -36,7 +36,7 @@ e.) Go to EC2 and connect with SSH (normal connect method)
 Senerio-6.) Recover Pem file (create new instance and detach primary instance volume and attach with new ec2 instance and mount the volume than again vice-versa of the same volume and login the primary instance. )
 
 
-Senerio-7.) When Server Refused to take the key :-=
+Senerio-7.) When Server Refused to take the key :-=  (USERDATA :- /.ssh) 
             --------------------------------------
 
 a.) Stop the instance
