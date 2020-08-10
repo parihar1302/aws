@@ -36,7 +36,8 @@ e.) Go to EC2 and connect with SSH (normal connect method)
 Senerio-6.) Recover Pem file (create new instance and detach primary instance volume and attach with new ec2 instance and mount the volume than again vice-versa of the same volume and login the primary instance. )
 
 
-Senerio-7.) When server refused to take the key :-=
+Senerio-7.) When Server Refused to take the key :-=
+            --------------------------------------
 
 a.) Stop the instance
 
@@ -56,7 +57,7 @@ c.) Go to the Knowldge-Center Artical and copy the code              {https://aw
 
 
 
-d.) Go to the Dashboard > select instance > Action > View/Change UserData > Paste the knowledge-center code and in that Paste the Key content in as "ENTER KEY PAIR CONTENT HERE" > Save
+d.) Go to the Dashboard > select instance > Action > View/Change UserData > Paste the knowledge-center code and in that Paste the Key content in as "ENTER KEY PAIR CONTENT HERE..." > Save
 
 e.) Restart the instance 
 
