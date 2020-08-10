@@ -35,3 +35,32 @@ e.) Go to EC2 and connect with SSH (normal connect method)
 
 Senerio-6.) Recover Pem file (create new instance and detach primary instance volume and attach with new ec2 instance and mount the volume than again vice-versa of the same volume and login the primary instance. )
 
+
+Senerio-7.) When server refused to take the key :-=
+
+a.) Stop the instance
+
+b.) Go to the terminal(CLI) and generate a new key.
+
+# ssh-keygen -y -f key.pem         ##{generate key and copy the content}
+
+
+c.) Go to the Knowldge-Center Artical and copy the code              {https://aws.amazon.com/premiumsupport/knowledge-center/ec2-server-refused-our-key}
+
+#cloud-config
+ ssh_deletekeys: false
+ ssh_authorized_key:
+   - ssh-rsa ENTER KEY PAIR CONTENT HERE...
+ cloud_final_modules:
+   - [ssh, always]
+
+
+
+d.) Go to the Dashboard > select instance > Action > View/Change UserData > Paste the knowledge-center code and in that Paste the Key content in as "ENTER KEY PAIR CONTENT HERE" > Save
+
+e.) Restart the instance 
+
+f.) Login to the instance
+
+
+
