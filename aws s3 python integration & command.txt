@@ -1,0 +1,95 @@
+python aws integration and commands                     https://realpython.com/python-boto3-aws-s3/
+--------------------------------------------------
+step 1.) SET UP
+---------------------------------
+* apt install python -y
+
+* apt install python-pip -y
+
+* pip install awscli
+
+* pip install boto3
+
+* create a user a save access and secreat access key
+
+* aws configure      ##{give access & secreat access & region key}
+        
+       OR
+* $ export AWS_ACCESS_KEY_ID=4lKG0RY5v4tha+b7UjA4WO
+  $ export AWS_SECRET_ACCESS_KEY=WOQvMIc71yE8kfswJ5WGs6KMmvrfkh
+
+       OR
+* mkdir ~/.aws      
+
+* touch config credentials
+
+* vi ~/.aws/credentials  ##{:- edit file}
+[default]
+aws_access_key_id = YOUR_ACCESS_KEY_ID
+aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
+##note:-  type as it is and paste access and secreat key & save
+
+* vi ~/.aws/config
+[default]
+region = YOUR_PREFERRED_REGION
+##note: paste the region and always take mumbai region
+
+
+
+STEP 2.) INTEGRATION WITH S3
+--------------------------------------
+
+###list buckets
+----------------------------------------
+import boto3           
+s3 = boto3.resource('s3')
+for bucket in s3.buckets.all():
+    print(bucket.name)
+
+
+###list buckets with detail
+-----------------------------------------
+import boto3    
+s3 = boto3.client('s3')
+response = s3.list_buckets()
+print(response)
+
+
+### create bucket
+-----------------------------------------
+import boto3    
+s3 = boto3.client('s3')
+s3.create_bucket(Bucket = 'singh1302', CreateBucketConfiguration = {'LocationConstraint': 'ap-south-1'})
+
+
+### create bucket and upload file
+--------------------------------------------
+import boto3    
+s3 = boto3.client('s3')
+s3.create_bucket(Bucket = 'mojojojo1567', CreateBucketConfiguration = {'LocationConstarint': 'ap-south-1'})
+filename = 'abhi.txt'
+bucket_name = 'mojojojo1567'
+s3.upload_file(filename, bucket_name, filename)
+
+
+### upload file on existing bucket
+------------------------------------------------
+import boto3    
+s3 = boto3.client('s3')
+filename = 'abhi.txt'
+bucket_name = 'abhi1302shekk'
+s3.upload_file(filename, bucket_name, filename)
+
+
+### download file from bucket to local system
+--------------------------------------------------------
+import boto3    
+s3 = boto3.client('s3')
+s3.download_file('abhi1302bucket', 'abhi.txt', 'shek.txt')      ###('bucket', 'filename', 'newfilename')
+
+
+### downloadfile in perticular location
+-----------------------------------------------------
+import boto3    
+s3 = boto3.client('s3')
+s3.download_file('abhi1302shekk', 'abhi.txt', 'd:/endgame.txt')
