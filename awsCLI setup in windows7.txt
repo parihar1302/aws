@@ -1,8 +1,7 @@
-            https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html#install-msi-on-windows
 
+AWS CLI setting up on Windows
 
-
-AWS CLI setting up on Windows7
+* Download AWS CLI msi image from here:- https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html#install-msi-on-windows
 
 * create user and save the access & secreat access key
 
@@ -17,6 +16,8 @@ AWS CLI setting up on Windows7
 * pip --version
 
 * pip install awscli
+      Or
+  apt install python-pip -y
 
 * aws --version
 
