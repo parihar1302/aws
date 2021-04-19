@@ -1,0 +1,11 @@
+## Launching EC2 with the help of Cloudformation
+-------------------------------------------------
+
+Resources:
+  MyEC2Instance: #An inline comment
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: ami-0518bb0e75d3619ca       
+      AvailabilityZone: us-west-2b       
+      InstanceType: t2.micro
+      KeyName: abhaykey
