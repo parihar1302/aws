@@ -1,0 +1,17 @@
+## Launching EC2 and adding userdata script to ccreate New Userwith the help of Cloudformation
+-------------------------------------------------
+
+Resources:
+  MyEC2Instance: #An inline comment
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: ami-0518bb0e75d3619ca       
+      AvailabilityZone: us-west-2b       
+      InstanceType: t2.micro
+      KeyName: abhaykey
+      UserData:
+        !Base64 |
+        #!/bin/bash
+        apt -y update
+        adduser abhay
+        usermod -a -G sudo abhay
