@@ -1,0 +1,17 @@
+## SSh-Agent Forwarding:- To access private instance without storing pem file in public instance.
+==========================
+
+#Note:- After creating Public & Private instance follow below steps:-
+
+# Open your terminal git bash & go to the pem file location & type below commands.
+
+ssh-agent bash
+ssh-add key.pem
+
+# Now login to public instance
+ssh -A ec2-user@publicIPaddress
+
+# Now login to priate instance in same terminal
+ssh ec2-user@privateIPaddress
+
+=============================================================================================================================================
