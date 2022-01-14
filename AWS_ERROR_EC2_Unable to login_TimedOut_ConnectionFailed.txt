@@ -7,9 +7,9 @@ Senerio-2.) Key does not have readonly (400 or 600) permission.
 
 # chmod 400 key.pem
 
-Senerio-3.) Security Group port ssh (22) is not open.
+Senerio-3.) Connection Timed Out, Port (22).Security Group port ssh (22) is not open.
 
-Senerio-4.) Security Group Port SSH > Source (your local computer IP).
+Solution:- Security Group Port SSH > Source (your local computer IP).
 
 
 Senerio-5.) System Manager  {without ssh, ssm can login to the ec2 instance. By default "SSM Agent" installed in Ubuntu16/18.04, AMAZON Linux/Linux2, Amazon ECS-Optimised, windows server 2008/12 R2/16/19.}
