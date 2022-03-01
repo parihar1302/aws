@@ -3,6 +3,8 @@ aws-cli deploying ec2 instance
 
 
 * install python, pip & aws-cli
+    OR
+  sudo apt-get install AWS cli
 
 
 * aws configure
