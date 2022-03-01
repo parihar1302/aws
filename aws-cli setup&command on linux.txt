@@ -7,6 +7,8 @@
 
 2.) INSTALL PIP
 > yum install python-pip -y
+       OR
+  yum install pip -y
 
 3.) INSTALL AWS-CLI
 > pip install awscli
