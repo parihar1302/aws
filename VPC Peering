@@ -1,5 +1,9 @@
-VPC Peering:- It helps you to connect 2 different VPCs with each other. In that, both VPC work like one large VPC/network & instances can communicate with each other through private ipv4 & ipv6. It doesn't require Public IP address to connect with another instance.
+VPC Peering:- It helps you to connect 2 different VPCs with each other. It's a bidirectional connectivity. In that, both VPC work like one large VPC/network & instances can communicate with each other through private ipv4 & ipv6. It doesn't require Public IP address to connect with another instance.
 ============= VPC Peering can be done in Same Region, Cross/Multi Region & Cross/Multi AWS Account.
+              You can connect another instance through Private IP, since it's Intranet(A Large one network)
+              If traffic flows in peering connection than only you will be charged.
+              One vpc needs to send request, where other has to accsept it.
+              
 
 Note:- During the VPC peering, you need to make sure that CIDR range & Subnet IP range should not be same or duplicate. 
 ------
