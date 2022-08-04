@@ -12,4 +12,4 @@ def lambda_handler(event, context):
     # TODO implement 
     ec2 = boto3.client('ec2', region_name=region)
     ec2.stop_instances(InstanceIds=instances)
-    print 'stopped your instances: ' + str(instances)
+    print ('stopped your instances: ' + str(instances))
