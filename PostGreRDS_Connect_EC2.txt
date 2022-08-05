@@ -1,0 +1,63 @@
+## PostGreySQL on EC2 (Ubuntu18) and connecting RDS instanec           
+-----------------------------------------------------------------------
+{note:-  VPC should be same for RDS and EC2,  
+        RDS should be accessible from Public
+		In RDS security group open mysql and source must be EC2 security group id.}
+          
+Stpe-1.) Create PostGre RDS instnace
+
+Step-2.) Launch EC2 ubuntu instance and Log-in                 {https://www.tecmint.com/mysql-mariadb-postgresql-database-backup-using-automysqlbackup-autopostgresqlbackup/}
+
+* sudo -i
+* sudo apt-get update
+* sudo apt-get install postgresql-client                          {installing PostgreSQL client}
+        OR
+  Sudo aptitude update && aptitude install mariadb-client mariadb-server mariadb-common postgresql-client postgresql postgresql-common      {installing all in one command}		
+* psql postgresqlDB -U postgresqlDB -h postgresqldb.crvdqe3bdhho.ap-southeast-1.rds.amazonaws.com -p 5432 -W         {Connecting to RDS db}
+      <DBName>       <DBUsername>                            <RDS Instance Endpoint>           <RDS PORT>
+
+
+Commands:-
+
+# CREATE DATABASE sales;            {creating db}
+
+# \l             {display all db}
+
+# pg_dump -U postgresqlDB sales > Mybackup.pgsql             {backup db}
+
+# psql -U postgresqlDB sales < Mybackup.pgsql              {restore db}
+
+
+
+
+
+
+###### Manual Postgre DB backup           {https://www.tecmint.com/backup-and-restore-postgresql-database/}
+
+
+######   Automatic Postgre DB backup     {https://www.linode.com/docs/guides/how-to-back-up-your-postgresql-database/}
+                                         {https://www.tecmint.com/mysql-mariadb-postgresql-database-backup-using-automysqlbackup-autopostgresqlbackup/}
+										 
+										 
+										 
+####   Create Schema:-
+
+# CREATE SCHEMA myschema;          {creating schema}
+
+SELECT *                            {displaying all Schema}
+FROM pg_catalog.pg_namespace
+ORDER BY nspname;
+
+# Need to add user and role
+
+# pg_dump --schema=marketing postgresqlDB > backupfile.sql          {schema backup }
+
+# Find pid inPostgreSQL               {https://dataedo.com/kb/query/postgresql/kill-session}
+--------------------------------
+select * from pg_stat_activity;
+
+# Kill Session:-
+---------------------------------------
+select pg_terminate_backend(pid) 
+from pg_stat_activity
+where pid = '18765';
