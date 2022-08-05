@@ -1,0 +1,31 @@
+##Apache port number change on ubuntu/debian
+
+# Connect to EC2 instance & follow below commands:-
+--------------------------------------------------
+* sudo -i
+
+* apt-get install apache2 -y
+
+* service start apache2
+
+* service enable apache2
+
+
+## Now to go the config file & modify the port number:-
+-----------------------------------------------------------
+* sudo vi /etc/apache2/ports.conf      #{path}
+
+*    Listen 8090
+
+*    vi /etc/apache2/sites-enabled/000-default.conf
+
+*    <VirtualHost *:8090>
+
+*    sudo systemctl restart apache2
+
+*    sudo netstat -tulpn | grep :8090
+
+## Now verify apache2 with modified port number:- 
+*    curl http://IP-address:8090       ###{verify from CLI}
+        
+*    http://IP-address:8090        ##{hit the url & verify}
