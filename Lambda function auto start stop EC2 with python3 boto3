@@ -1,7 +1,17 @@
 ## Creating Lamnbda function in Python3 with boto3 modules to Auto start & stop EC2 instance
 ---------------------------------------------------------------------------------------------
-##  for stoping single EC2:- 
 
+## Step-1.) Create EC2 instance.
+
+## Step -2.) Create IAM Role for Lambda.
+
+## Step -3.) In same IAM Role:- Add permission >> create inline policy >> EC2 >> startinstance/stopinstance >> Add arn :- i,) Region     <<save ##(can add muli ec2 by clicking on add arn)
+                                                                                                                         ii.) instanceID 
+## Step-4.) Create Lambda Fucntion &  add below Python3 script to generate Event for EC2. Kindly modify timeout time from 3 to 10 sec from configuration.
+
+
+Senerio:-1.)  for stoping single EC2:- 
+========================================
 import json
 import boto3
 
@@ -17,7 +27,7 @@ def lambda_handler(event, context):
 -----------------------------------------------------------
 
 
-## For Starting Multiple EC2 instance:-
+Senerio-2.) For Starting Multiple EC2 instance:-
 =======================================
 
 import json
