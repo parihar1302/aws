@@ -1,5 +1,5 @@
 ##ERROR:- EC2 Unable to Access/login EC2 Instance
-----------------------------------------
+---------------------------------------------------
 
 Senerio-1.) No such file or directory present
 
