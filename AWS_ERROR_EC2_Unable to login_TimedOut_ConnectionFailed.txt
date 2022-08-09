@@ -1,15 +1,25 @@
 ##ERROR:- EC2 Unable to Access/login EC2 Instance
 ----------------------------------------
 
-Senerio-1.) Pem key is not available in local system
+Senerio-1.) No such file or directory present
+
+Solution:- Go to the pem file location & than try loging it.
+
 
 Senerio-2.) Key does not have readonly (400 or 600) permission.
 
-# chmod 400 key.pem
+Solution:- chmod 400 key.pem
+
 
 Senerio-3.) Connection Timed Out, Port (22).Security Group port ssh (22) is not open.
 
 Solution:- Security Group Port SSH > Source (your local computer IP).
+
+
+Senerio-4.) Connection refused timed out.
+
+Solution:- Verify wheather InternetGateway is attached to correct VPC or not.
+           Verify Routing table connection is correct or not.
 
 
 Senerio-5.) System Manager  {without ssh, ssm can login to the ec2 instance. By default "SSM Agent" installed in Ubuntu16/18.04, AMAZON Linux/Linux2, Amazon ECS-Optimised, windows server 2008/12 R2/16/19.}
@@ -64,4 +74,12 @@ e.) Restart the instance
 f.) Login to the instance
 
 
+Senerio-8.) Unable to access.
+
+Solution:- Change instance size from t2 to t3. Somtimes due to low RAM & Vcpu screen, it gets stuck in few .
+
+
+Seneio-9.) Frozen terminal screen after instance connection.
+
+Solution:- Due to local ISP (internet service provider) this issue occurs. Better you standard ISP like:- Jio, Airtel & etc
 
