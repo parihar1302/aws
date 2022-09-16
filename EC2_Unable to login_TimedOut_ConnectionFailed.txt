@@ -1,4 +1,4 @@
-##ERROR:- EC2 Unable to Access/login EC2 Instance
+##ERROR:- Connection Refused or Timed out error or EC2 Unable to Access/login EC2 Instance                          https://aws.amazon.com/premiumsupport/knowledge-center/ec2-linux-resolve-ssh-connection-errors/
 ---------------------------------------------------
 
 Senerio-1.) No such file or directory present
@@ -22,24 +22,35 @@ Solution:- Verify wheather InternetGateway is attached to correct VPC or not.
            Verify Routing table connection is correct or not.
 
 
-Senerio-5.) System Manager  {without ssh, ssm can login to the ec2 instance. By default "SSM Agent" installed in Ubuntu16/18.04, AMAZON Linux/Linux2, Amazon ECS-Optimised, windows server 2008/12 R2/16/19.}
+
+Senerio-5.) (SSM) System Session Manager  (when remote server ssh service doesn't respond/stop)
+
+##Note:-{without ssh, ssm can login to the ec2 instance. By default "SSM Agent" installed in Ubuntu16/18.04, AMAZON Linux/Linux2, Amazon ECS-Optimised, windows server 2008/12 R2/16/19.}
 
 a.) Go to System manager > Session manager > start a session
 
-b.) if roles is not attached than go to the EC2 > action > Attach IAM role > New role > create EC2AccessSSM.
+b.) if roles is not attached than go to the EC2 > action > Attach IAM role > New role > create AmazonSSMManagedEC2InstanceDefaultPolicy.
 
 C.) Start a session
 
 Type thes commands:-  
-   
-                 i.)  sudo iptables -F                           ##{Disabling Firewall, it will remove all rules which are added}
+                 i.) sudo iptables -I INPUT 1 -p tcp --dport 22 -j ACCEPT      ##{disabling 22 rule from firewall}
+                           OR
+                 i.)  sudo iptables -F                           ##{Disabling whole Firewall, it will remove all rules which are added}
+                ii.)  sudo iptables -P INPUT ACCEPT         
+               iii.)  sudo ufw disable
+               
+
+d.) Now restart SSH service & verify wheather it's running or not:-
                 ii.)  sudo service sshd restart                  ##{Restarting SSH service}
                iii.)  sudo netstat -tnlp | grep :22              ##{Verifing SSH service}
+                            OR
+                      sudo ss -tpln | grep -E '22|ssh'
 
 
-d.)  Terminate session
+e.)  Terminate session
 
-e.) Go to EC2 and connect with SSH (normal connect method) 
+f.) Go to EC2 and connect using SSH (normal connect method) 
 
 
 
