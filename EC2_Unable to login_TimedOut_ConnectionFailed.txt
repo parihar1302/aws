@@ -1,29 +1,20 @@
-##ERROR:- Connection Refused or Timed out error or EC2 Unable to Access/login EC2 Instance                          https://aws.amazon.com/premiumsupport/knowledge-center/ec2-linux-resolve-ssh-connection-errors/
----------------------------------------------------
+##ERROR:- EC2 Unable to Access/login EC2 Instance
+----------------------------------------
 
-Senerio-1.) No such file or directory present
-
-Solution:- Go to the pem file location & than try loging it.
-
+Senerio-1.) No such file or directory.Pem key is not available in local system
+# Search the key & go to the file location than connect with EC2 Instance
 
 Senerio-2.) Key does not have readonly (400 or 600) permission.
+# chmod 400 key.pem
 
-Solution:- chmod 400 key.pem
+Senerio-3.) Connection time out:- Port ssh (22) is not open.
+# Security Group Port SSH > Source (your local computer IP).
 
-
-Senerio-3.) Connection Timed Out, Port (22).Security Group port ssh (22) is not open.
-
-Solution:- Security Group Port SSH > Source (your local computer IP).
-
-
-Senerio-4.) Connection refused timed out.
-
-Solution:- Verify wheather InternetGateway is attached to correct VPC or not.
-           Verify Routing table connection is correct or not.
+Senerio-4.) Connection refesed to connect instance
+# InternetGateway is attached to correct VPC or not. & Check the Routing Table.
 
 
-
-Senerio-5.) (SSM) System Session Manager  (when remote server ssh service doesn't respond/stop)
+Senerio-5.) (SSM) System Session Manager  (when remote server's ssh service doesn't respond/stop)
 
 ##Note:-{without ssh, ssm can login to the ec2 instance. By default "SSM Agent" installed in Ubuntu16/18.04, AMAZON Linux/Linux2, Amazon ECS-Optimised, windows server 2008/12 R2/16/19.}
 
@@ -47,27 +38,36 @@ d.) Now restart SSH service & verify wheather it's running or not:-
                             OR
                       sudo ss -tpln | grep -E '22|ssh'
 
+d.)  Terminate session
 
-e.)  Terminate session
-
-f.) Go to EC2 and connect using SSH (normal connect method) 
+e.) Go to EC2 and connect with SSH (normal connect method) 
 
 
 
 Senerio-6.) Recover Pem file (create new instance and detach primary instance volume and attach with new ec2 instance and mount the volume than again vice-versa of the same volume and login the primary instance. )
 
 
-Senerio-7.) When Server Refused to take the key :-=  (USERDATA :- /.ssh) 
+Senerio-7.) Error:- publickey permission dening:- Replacing Keypair of EC2 using UserData Script :-=  (USERDATA :- /.ssh)        https://stackoverflow.com/questions/7881469/change-key-pair-for-ec2-instance
             --------------------------------------
 
-a.) Stop the instance
+a.) Create new Keypair(mykey.pem) from from ec2 console.               ##{it will store in local system downloa foler}
 
-b.) Go to the terminal(CLI) and generate a new key.
+b.) Go to the terminal(CLI) and generate a new public key from downloade private pem file in local machine.
 
-# ssh-keygen -y -f key.pem         ##{generate key and copy the content}
+# ssh-keygen -y -f mykey.pem         ##{generate public key and copy the content}
 
 
-c.) Go to the Knowldge-Center Artical and copy the code              {https://aws.amazon.com/premiumsupport/knowledge-center/ec2-server-refused-our-key}
+c.) Stop the instance >>>  Action  >>>  Instance Setting >>> Edit User Data  >>>  Modify user data as text  >>> paste below script after modifing ssh-rsa content of public key.
+
+##Note.) Go to the Knowldge-Center Artical and copy the code              {https://aws.amazon.com/premiumsupport/knowledge-center/ec2-server-refused-our-key}
+
+#cloud-config
+cloud_final_modules:
+- [once]
+bootcmd:
+ - echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVv2R3Qr7PfIQdVcC40MriIEWtH2xxzVr6O6CYkDzEx+9hY/7TV3kshQX5q6ZLJEKbexdPuXUCVdn96BBiTgzImg9Q4BeSczxghNL7mmNkyv1mY82ezKNWZket8PEEyG/9pPxDJMAaXzBBHH/Ly0fQsW9BFKZmHfHNrNEQNEY6rHryM4lJmf41K4/5ieU7rONubg6jxOqMIXj7VfT7tX48Xg5phvQVnBShhTwdqhKTbkdP/94bocgMeC9afXHmAEFICguselCMlt+W28dACNdHz3a9uk9E1kqjVgmMuYKoyDzU6fKcR5nlQ64D8hYyycyMeJeSsO6P1PbO0/C3TVjT' > /home/ubuntu/.ssh/authorized_keys
+    
+    OR
 
 #cloud-config
  ssh_deletekeys: false
@@ -77,20 +77,53 @@ c.) Go to the Knowldge-Center Artical and copy the code              {https://aw
    - [ssh, always]
 
 
-
-d.) Go to the Dashboard > select instance > Action > View/Change UserData > Paste the knowledge-center code and in that Paste the Key content in as "ENTER KEY PAIR CONTENT HERE..." > Save
+d.) Save
 
 e.) Restart the instance 
 
-f.) Login to the instance
+f.) Login to the instance with new pem file name
+
+##Note:- Error:p-- if you enup with an error port 22: Connection timed out
+## Solution:- go & check the userdata script again, there might be 2 times ssh-rsa mention, kindly remove one.
 
 
-Senerio-8.) Unable to access.
 
-Solution:- Change instance size from t2 to t3. Somtimes due to low RAM & Vcpu screen, it gets stuck in few .
+Senerio-8.) (SSM)Lost Pem file, public key deny, :-  Modifing keypair into server ec2  :- SSM         https://medium.com/tensult/aws-how-to-regain-access-to-an-ec2-instance-after-losing-your-ssh-private-key-913c53385d41
+---------------------------------------
+
+a.) Create new instance with minimum configuration like t2.micro & launch it.
+
+b.) login to the new instance  ---> cd .ssh/  ---> cat authporized_keys  --->  copy the content  (this is public key content)
+
+c.) a.) Go to System manager > Session manager > start a session
+
+##Note:-if roles is not attached, your instances won't get listed. Go to the EC2 > action > Attach IAM role > New role > create AmazonSSMManagedEC2InstanceDefaultPolicy.
+
+d.) Start a session
+
+e.) cd .ssh/  ---> vi  authorized_keys  ---> paste the content in next line (public key content)  p--> Save & exit
+
+f.) Now login with new key.
 
 
-Seneio-9.) Frozen terminal screen after instance connection.
 
-Solution:- Due to local ISP (internet service provider) this issue occurs. Better you standard ISP like:- Jio, Airtel & etc
+Senerio-9.) Lost Pem Key/Change Keypair:-                          https://stackoverflow.com/questions/7881469/change-key-pair-for-ec2-instance
+-----------------------------------------------
 
+a.) Create new keypair (mykey.pem) from ec2 console.     #{it'll store in local machine, downlaod foler}
+
+b.) chmod 400 mykey.pem
+
+c.) ssh-keygen -f mykey.pem -y        ##{Generate RSA public of the newly-downloaded file in your local machine}
+
+d.) Copy the RSA code 
+
+e.) c.) a.) Go to System manager > Session manager > start a session
+
+##Note:-if roles is not attached, your instances won't get listed. Go to the EC2 > action > Attach IAM role > New role > create AmazonSSMManagedEC2InstanceDefaultPolicy.
+
+d.) Start a session
+
+e.) cd .ssh/  ---> vi  authorized_keys  ---> paste the content in next line (public key content)  p--> Save & exit
+
+f.) Now login with new key
