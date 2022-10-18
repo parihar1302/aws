@@ -1,0 +1,122 @@
+## Creating AWS EKS cluster & Monitor Logs on Cloud-Watch                  https://epsagon.com/how-to/streaming-eks-metrics-and-logs-to-cloudwatch/
+==========================================================
+
+* Login to AWS account 
+
+* Go to the IAM service & create User with Admin access
+
+* Launch EC2 instance & login into it
+
+## Now install EKctl in Linux machine:-
+==============================================
+$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+
+##Note:- EKctl :- it's a cli tool which create & manage K8s cluster on EKS. It's written in GO language & use Cloudformation in backend.
+
+
+*  sudo mv /tmp/eksctl /usr/local/bin
+
+* eksctl version
+
+
+## Install AWS-CLI - :-
+============================
+* curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+* unzip awscliv2.zip
+
+* sudo ./aws/install
+
+
+
+# Now Configure aws-cli:-
+============================
+$ aws configure
+access key of iam user :-
+seacreate access key :-
+region :- us-west-2
+
+
+* Now Install Kubctl :-
+=====================
+
+$ curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.8/2020-09-18/bin/linux/amd64/kubectl
+
+## Note:- kubctl :- Kubectl is the Kubernetes command-line utility used to communicate with the Kubernetes API server. 
+                    Downloading and installing the EKS-vended kubectl binary for Linux requires another.
+					
+
+* chmod +x ./kubectl
+
+* sudo mv ./kubectl /usr/local/bin
+
+* kubectl version --short --client
+
+
+
+## Below command will create EKS cluser on aws:-
+========================================================
+
+$ eksctl create cluster --name my-newtest-cluster --version 1.21 --region us-west-2 --nodegroup-name linux-nodes --node-type t2.micro --nodes 2 --ssh-access --ssh-public-key  oregoney --managed
+
+{version :- choose above 1.20, 1.21, 1.22, 1.23
+oregon:-  is a keypair name}
+
+## {note:-Under the hood, eksctl uses CloudFormation, which creates one EKS stack for the master control plane and another stack for the worker nodes.}
+
+
+
+# verify on cloudformation:-
+
+
+
+$ eksctl get cluster -n my-newtest-cluster --region us-west-2      ## retrive the detail of cluster:-
+
+
+$ kubectl get nodes    ##status of worker node
+
+
+
+## Set Up CloudWatch Container Insights for AWS EKS:-
+========================================================
+
+* Go to the EC2 instance & select worker node {my-newtest-cluster-linux-nodes-Node}.
+
+* click on attached IAM Role, this will redirect you to IAM service    ##{you can find in details}
+
+* Click on Add Permission   >>>  Attach Policy  >>>  search:- CloudWatchAgentServerPolicy   >>> select  >>>   Attach Policy.
+
+
+
+## Deploying Container Insights on EKS:-
+============================================
+## Dry-run command:-
+$ curl https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluentd-quickstart.yaml | sed "s/{{cluster_name}}/cluster-name/;s/{{region_name}}/cluster-region/" | kubectl apply -f -
+
+
+## Final Command to deploy container insight"-
+$ curl https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluentd-quickstart.yaml | sed "s/{{cluster_name}}/my-newtest-cluster/;s/{{region_name}}/us-west-2/" | kubectl apply -f -
+
+
+##{Note:- This command sets up CloudWatch agents and Fluentd. It starts by setting up a namespace for CloudWatch to create a service account, which in turn creates a configmap for the CloudWatch agent and deploys the CloudWatch Agent as a DaemonSet. The same process is repeated with Fluentd}
+
+
+
+## Verify Cloudwatch & Fluentd Pods created in Amazon-Cloudwatch namesspace :-
+==================================================================================
+$ kubectl get pods -n amazon-cloudwatch
+
+
+
+
+### Now Monitor the Logs on CloudWatch Dashboard:-
+===================================================
+
+* Go to Cloudwatch service  >>>  insights  >>  Container Insights >>>  Click on Resource Dropdown & select Performance Monitoring  >>> 
+
+
+
+
+
+
+
