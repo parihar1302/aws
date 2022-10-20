@@ -1,5 +1,6 @@
 ## Creating AWS EKS cluster & Monitor Logs on Cloud-Watch                  https://epsagon.com/how-to/streaming-eks-metrics-and-logs-to-cloudwatch/
 ==========================================================
+* Region:- Oregaon
 
 * Login to AWS account 
 
