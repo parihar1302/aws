@@ -1,10 +1,31 @@
-aws-cli deploying ec2 instance
+## aws-cli deploying ec2 instance (ubuntu 22)
+===============================================
 
+Step:-1.) ## Install AWS-CLI - :-
+============================
+$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"        {##installing awscli from script}       <---METHOD:-1.)
 
+* unzip awscliv2.zip
 
-* install python, pip & aws-cli
-    OR
-  sudo apt-get install AWS cli
+* sudo ./aws/install
+
+     OR
+     
+$ sudo apt install python3 -y             {installing Python3}                       <----- Method:-2.)
+ 
+* python3 --version 
+ 
+* sudo apt install python3-pip            {installing pip same as pip3}
+
+* pip --version
+
+* pip install awscli               {installing awscli}
+  
+* aws --version
+
+     OR
+     
+$  sudo apt install awscli -y                         <------ Method:-3.)
 
 
 * aws configure
