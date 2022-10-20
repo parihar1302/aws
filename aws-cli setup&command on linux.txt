@@ -2,23 +2,35 @@
 
 * SEETING UP THE AWS-CLI
 ---------------------------------
-* sudo apt-get install AWS cli
-        OR
+## Install AWS-CLI - :-
+============================
+$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"        {##installing awscli from script}       <---METHOD:-1.)
 
-1.) INSTALL PYTHON
-> yum install python3 -y
+* unzip awscliv2.zip
 
-2.) INSTALL PIP
-> yum install python-pip -y
-       OR
-  yum install pip -y
+* sudo ./aws/install
 
-3.) INSTALL AWS-CLI
-> pip install awscli
+     OR
+     
+$ sudo apt install python3 -y             {installing Python3}                       <----- Method:-2.)
+ 
+* python3 --version 
+ 
+* sudo apt install python3-pip            {installing pip same as pip3}
 
+* pip --version
+
+* pip install awscli               {installing awscli}
+  
+* aws --version
+
+     OR
+     
+$  sudo apt install awscli -y                         <------ Method:-3.)
 
 ___________________________________________
-                           
+  
+ ##  Prequiuits:-
 keypair:- qqq.pem
 yaml file:- myfile.yml
 stack name:- mystack                                       
