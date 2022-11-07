@@ -1,0 +1,42 @@
+## SSM set up on Ubuntu22, CentOS, AMI2
+===============================================
+
+{#Note:- By Default SSM is pre-installed in Ubntu18 or later , AMI 2 & CentOS, Redhat                   https://docs.aws.amazon.com/systems-manager/latest/userguide/agent-install-ubuntu-64-snap.html
+
+##Verify the SSM version on Ubuntu18 or later
+sudo systemctl status snap.amazon-ssm-agent.amazon-ssm-agent.service            
+     OR
+sudo snap list amazon-ssm-agent
+     OR
+sudo snap services amazon-ssm-agent
+
+
+# SSM Installation on Ubuntu18 or later
+sudo snap install amazon-ssm-agent --classic
+
+
+# sudo systemctl start snap.amazon-ssm-agent.amazon-ssm-agent.service          ##{to start SSM}
+       OR
+  sudo snap start amazon-ssm-agent
+  
+# sudo systemctl stop snap.amazon-ssm-agent.amazon-ssm-agent.service           {To stop SSM agent}
+-------------------------------------------------------------------------------------------------------------
+
+
+## SSM set up through UserData Script on Ubuntu16 & 18:-                https://www.decodingdevops.com/how-to-install-ssm-agent-on-linux-ec2-instance/
+=========================================================
+
+#!/bin/bash
+mkdir /tmp/ssm
+cd /tmp/ssm
+wget https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
+sudo dpkg -i amazon-ssm-agent.deb
+sudo start amazon-ssm-agent
+sudo systemctl enable amazon-ssm-agent
+
+
+# SSM set up through Userdata script on Amazon Linux 2 :-
+==========================================================
+cd /tmp
+sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+sudo start amazon-ssm-agent
