@@ -122,8 +122,34 @@ e.) c.) a.) Go to System manager > Session manager > start a session
 
 ##Note:-if roles is not attached, your instances won't get listed. Go to the EC2 > action > Attach IAM role > New role > create AmazonSSMManagedEC2InstanceDefaultPolicy.
 
+
 d.) Start a session
 
 e.) cd .ssh/  ---> vi  authorized_keys  ---> paste the content in next line (public key content)  p--> Save & exit
 
 f.) Now login with new key
+----------------------------------------------
+
+
+Senerio-10) Ec2 instance is accessing without keypair or SSM but via MSSH
+
+# Open WSL terminal on local machine.
+ 
+$ cd /mnt/c/Users/Abhishek/Downloads
+$ sudo apt update
+$ aws s3 cp s3://ec2-instance-connect/cli/ec2instanceconnectcli-latest.tar.gz .
+$ sudo apt install python3-pip -y
+$ sudo pip3 install ec2instanceconnectcli-latest.tar.gz
+
+## Now swicth to acc/env on which instance needs to be logged-in by using below command. By-dafult, terminal opens at mgmt
+
+$ evel $(aws sts assume role --role-arn-....) opey the command from google.
+$ aws sts get-caller-identity
+$ mssh instance_id
+
+Error:- Not authorized to perform this task. Below Permissions are missing on your IAM role
+"ec2:DescribeInstances"
+"ec2-instance-connect:SendSSHPublicKey"
+
+Solution:- Add above permissions on your IAM role > Iam policy
+---------------------------------------------------------------------------------------------
